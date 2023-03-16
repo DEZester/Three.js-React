@@ -2,7 +2,7 @@ import * as THREE from "three";
 import React from "react";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const Three = () => {
+const ThreeBasic = () => {
   const scene = new THREE.Scene(); //создаем сцену (осмнова)
   const camera = new THREE.PerspectiveCamera(75, 800 / 500, 0.1, 1000); //создаем камеру (основа)
 
@@ -64,4 +64,4 @@ const Three = () => {
   );
 };
 
-export default React.memo(Three);
+export default React.memo(ThreeBasic);
