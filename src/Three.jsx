@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import React from "react";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const Three = () => {
   const scene = new THREE.Scene(); //создаем сцену (осмнова)
@@ -10,42 +11,42 @@ const Three = () => {
   renderer.setClearColor(0x000000, 0); //задаем бэкграунд нашему рендереру (бэкграунд канваса)
   document.body.appendChild(renderer.domElement); //добавляем элемент
 
+  const controls = new OrbitControls(camera, renderer.domElement); //позволяем вращать нашу камеру
+
   //Настройка нашего элемента (в данном случае куба)
-  const geometry = new THREE.BoxGeometry(3, 2, 1); //задаем геометрию нашему элементу
+  const geometry = new THREE.BoxGeometry(30, 20, 1); //задаем геометрию нашему элементу
   const material = new THREE.MeshBasicMaterial({ color: "red" }); //задаем материал (в данном случае цвет)
   const cube = new THREE.Mesh(geometry, material); //присваиваем нашему элементу геометрию и материал
 
   scene.add(cube); //добавляем на нашу сцену куб
 
   cube.position.set(0, 0, 0); //pзадаем позицию нашему элементу
+  camera.position.set(0, 20, 100); //задаем позицию камере
 
-  camera.position.z = 10; //задаем позицию камере
-  //   camera.position.x = 5;
-  //   camera.position.y = 0;
+  function controlCameraOrbit() {
+    //обновляем нашу камеру каждую секунду
+    requestAnimationFrame(controlCameraOrbit);
 
-  function animate() {
-    //анимация вращения
-    requestAnimationFrame(animate);
-
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update(); //апдейт нашей камеры
 
     renderer.render(scene, camera);
   }
 
-  //   animate();
+  controlCameraOrbit();
 
   const setPositionEl = () => {
     //задаем позицию нашему элементу
-    cube.position.x = 3;
-    cube.position.y = 2;
+    cube.position.x = 30;
+    cube.position.y = -20;
     cube.position.z = 0;
     renderer.render(scene, camera);
   };
 
   const centerEl = () => {
     //центрируем наш элемент
-    cube.position.set(0, 0, 0);
+    cube.position.set(0, 0, 0); //задаем позицию кубу
+    camera.position.set(0, 20, 100); //задаем первоначальную позицию камере
     renderer.render(scene, camera);
   };
 
