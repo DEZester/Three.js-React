@@ -6,6 +6,7 @@ body {
 }
 canvas {
   margin: auto;
+  /* margin-top: 50px; */
   border: 2px solid black;
 }
 .renderer {
@@ -18,11 +19,15 @@ canvas {
   padding: 0;
   width: 105px;
   height: 55px;
-  margin: 50px auto 50px;
+  margin: 50px auto 20px;
   /* margin-right: 10px; */
   background: transparent;
   border-radius: 7.79406px;
   border: 2px solid #a14389;
   text-transform: uppercase;
   cursor: pointer;
+}
+.container {
+  display: flex;
+  justify-content: center;
 }
