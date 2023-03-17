@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const PlaneAndBox = () => {
+  const navigate = useNavigate();
   // Создаем сцену, камеру и рендерер
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -11,7 +13,8 @@ const PlaneAndBox = () => {
     10000
   );
   const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(1300, 800);
+  renderer.domElement.className = "game";
   document.body.appendChild(renderer.domElement);
 
   // Создаем плоскость
@@ -76,7 +79,6 @@ const PlaneAndBox = () => {
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    renderer.render(scene, camera);
     // console.log("cube= " + cube.position.z);
     // console.log("win= " + win.position.z);
     // console.log(cube.position.z.toFixed());
@@ -86,8 +88,10 @@ const PlaneAndBox = () => {
       cube.position.x === 4.300000000000001 &&
       cube.position.z === -2.500000000000001
     ) {
-      console.log("WINING");
+      // renderer.stop();
+      navigate("/win");
     }
+    renderer.render(scene, camera);
   }
   animate();
 
@@ -116,10 +120,17 @@ const PlaneAndBox = () => {
     camera.position.copy(initialCameraPosition); //
   };
 
+  const handleDeleteCanvas = () => {
+    document.body.removeChild(renderer.domElement);
+  };
+
   return (
     <div>
       <button className="btn" onClick={handleClick}>
         Reset
+      </button>
+      <button className="btn" onClick={handleDeleteCanvas}>
+        Delete
       </button>
     </div>
   );
