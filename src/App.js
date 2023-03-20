@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router";
 import WinPage from "./PlaneAndBox/WinPage";
 import CubeWithEdges from "./CubeWithEdges/CubeWithEdges";
 import SmoothCameraAnimation from "./SmoothCameraAnimation/SmoothCameraAnimation";
+import SphereMesh from "./SphereMesh/SphereMesh";
 
 //x-0 y-0 z-5
 function App() {
@@ -13,7 +14,7 @@ function App() {
     <div className="container">
       {/* <DrawingLines /> */}
       <Routes>
-        <Route path="/" element={<SmoothCameraAnimation />} />
+        <Route path="/" element={<SphereMesh />} />
         <Route path="/win" element={<WinPage />} />
       </Routes>
     </div>
