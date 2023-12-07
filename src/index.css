@@ -1,33 +1,36 @@
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
 }
+
 canvas {
-  margin: auto;
-  /* margin-top: 50px; */
-  border: 2px solid black;
+    margin: 50px auto;
+    border: 2px solid black;
 }
+
 .renderer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 50px;
-  margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
 }
+
 .btn {
-  padding: 0;
-  width: 105px;
-  height: 55px;
-  margin: 50px auto 20px;
-  /* margin-right: 10px; */
-  background: transparent;
-  border-radius: 7.79406px;
-  border: 2px solid #a14389;
-  text-transform: uppercase;
-  cursor: pointer;
+    padding: 0;
+    width: 105px;
+    height: 55px;
+    margin: 50px auto 20px;
+    /* margin-right: 10px; */
+    background: transparent;
+    border-radius: 7.79406px;
+    border: 2px solid #a14389;
+    text-transform: uppercase;
+    cursor: pointer;
 }
+
 .container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
