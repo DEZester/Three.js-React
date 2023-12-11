@@ -121,13 +121,7 @@ const Camera = () => {
     light.shadow.mapSize.width = data.shadowMapSizeWidth
     light.shadow.mapSize.height = data.shadowMapSizeHeight;
   }
-
-
-  gsap.to(controls.target,
-    {x: camera.position.x, y: camera.position.y, z: camera.position.z, duration: 2, ease: 'power3. inOut'})
-  gsap.to(camera.position,
-    {x: camera.position.x, y: camera.position.y + 3, z: camera.position.z, ease: 'power3. inOut',}, "-=2")
-
+  
 
   const animate = () => {
     requestAnimationFrame(animate);

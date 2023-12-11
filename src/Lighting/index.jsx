@@ -7,6 +7,9 @@ const Lighting = () => {
   const scene = new THREE.Scene()
   scene.add(new THREE.AxesHelper(5))
 
+  const stats = new Stats()
+  document.body.appendChild(stats.dom)
+
   const light = new THREE.DirectionalLight(0xffffff, Math.PI)
   light.castShadow = true
   light.shadow.mapSize.width = 512
@@ -171,6 +174,8 @@ const Lighting = () => {
     torus.forEach((t) => {
       t.rotation.y += 0.01
     })
+
+    stats.update()
 
     render()
 
