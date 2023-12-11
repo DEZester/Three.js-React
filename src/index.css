@@ -6,7 +6,7 @@ body {
 }
 
 canvas {
-    margin: 50px auto;
+    margin: 20px auto;
     border: 2px solid black;
 }
 
@@ -21,7 +21,7 @@ canvas {
     padding: 0;
     width: 105px;
     height: 55px;
-    margin: 50px auto 20px;
+    margin: 10px auto 10px;
     /* margin-right: 10px; */
     background: transparent;
     border-radius: 7.79406px;

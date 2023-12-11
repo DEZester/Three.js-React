@@ -2,6 +2,8 @@ import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls";
 import {GUI} from "dat.gui";
 import gsap from 'gsap'
+import {log} from "three/nodes";
+import {useEffect} from "react";
 
 const Camera = () => {
   const renderer = new THREE.WebGLRenderer({
@@ -21,7 +23,7 @@ const Camera = () => {
     1,
     1000.0
   );
-  camera.position.set(20, 5, 0);
+  camera.position.set(20, 20, 0);
 
   const scene = new THREE.Scene();
 
@@ -79,57 +81,47 @@ const Camera = () => {
     shadowMapSizeWidth: 512,
     shadowMapSizeHeight: 512,
   }
-
-  const gui = new GUI()
-  const lightFolder = gui.addFolder('THREE.Light')
-  lightFolder.addColor(data, 'color').onChange(() => {
-    light.color.setHex(Number(data.color.toString().replace('#', '0x')))
-  })
-  lightFolder.add(light, 'intensity', 0, Math.PI * 2, 0.01)
-
-  const directionalLightFolder = gui.addFolder('THREE.DirectionalLight')
-  directionalLightFolder
-    .add(light.shadow.camera, 'left', -10, -1, 0.1)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(light.shadow.camera, 'right', 1, 10, 0.1)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(light.shadow.camera, 'top', 1, 10, 0.1)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(light.shadow.camera, 'bottom', -10, -1, 0.1)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(light.shadow.camera, 'near', 0.1, 100)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(light.shadow.camera, 'far', 0.1, 100)
-    .onChange(() => light.shadow.camera.updateProjectionMatrix())
-  directionalLightFolder
-    .add(data, 'shadowMapSizeWidth', [256, 512, 1024, 2048, 4096])
-    .onChange(() => updateShadowMapSize())
-  directionalLightFolder
-    .add(data, 'shadowMapSizeHeight', [256, 512, 1024, 2048, 4096])
-    .onChange(() => updateShadowMapSize())
-  directionalLightFolder.add(light.position, 'x', -50, 50, 0.01)
-  directionalLightFolder.add(light.position, 'y', -50, 50, 0.01)
-  directionalLightFolder.add(light.position, 'z', -50, 50, 0.01)
-  directionalLightFolder.open()
-
-  function updateShadowMapSize() {
-    light.shadow.mapSize.width = data.shadowMapSizeWidth
-    light.shadow.mapSize.height = data.shadowMapSizeHeight;
-  }
   
-
   const animate = () => {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   };
 
+
+  const handler = () => {
+    gsap.to(controls.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    })
+    gsap.to(camera.position, {
+      duration: 2,
+      x: 20,
+      y: 5,
+      z: 0,
+      onUpdate: () => controls.update(),
+    })
+    gsap.to(camera.position, {
+      duration: 2,
+      x: 20,
+      y: 60,
+      z: 0,
+      delay: 2,
+      onUpdate: () => controls.update(),
+    })
+  }
+
+  useEffect(() => {
+    handler()
+  }, []);
+
   animate();
-  return <div></div>
+  return <div>
+    <button className="btn" onClick={handler}>
+      Reset
+    </button>
+  </div>
 }
 
 export default Camera
