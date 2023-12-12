@@ -5,6 +5,8 @@ import gsap from 'gsap'
 import {useEffect} from "react";
 import {SVGRenderer} from 'three/examples/jsm/renderers/SVGRenderer'
 
+var cloneDeep = require('lodash.clonedeep');
+
 const GetPointsOnScene = () => {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -15,15 +17,15 @@ const GetPointsOnScene = () => {
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor("#cbdaf2");
-  renderer.setSize(1300, 800);
-
+  renderer.setSize(1300, 768);
+  renderer.domElement.style.margin = "20px auto";
   const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000.0
+    45,
+    1300 / 768,
+    1,
+    1000
   );
-  camera.position.set(1, 0, 0);
+  camera.position.set(0, 0, 12);
 
   const scene = new THREE.Scene();
 
@@ -31,65 +33,71 @@ const GetPointsOnScene = () => {
 
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  // for (let i = 1; i < 3; i++) {
-  //   const box = new THREE.Mesh(
-  //     new THREE.BoxGeometry(2, 2, 2),
-  //     new THREE.MeshBasicMaterial({
-  //       color: 0x00ff00,
-  //     }))
-  //   if (i === 1) {
-  //
-  //     box.position.set(0, 1, -8);
-  //   } else {
-  //     box.position.set(0, 1, 8);
-  //
-  //   }
-  //   const edgesGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(2, 2, 2));
-  //   const edgesMaterial = new THREE.LineBasicMaterial({
-  //     color: "black",
-  //     linewidth: 2,
-  //   });
-  //   box.name = `box-${i}`
-  //   const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-  //   box.add(edges);
-  //   // box.castShadow = true;
-  //   box.receiveShadow = true;
-  //   scene.add(box);
-  // }
+  const addNewBoxMesh = (x, y, z) => {
+    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const boxMaterial = new THREE.MeshBasicMaterial({color: 'black'});
+    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    boxMesh.position.set(x, y, z);
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({color: 0x0077ff});
+    scene.add(boxMesh);
+
+    const edges = new THREE.EdgesGeometry(boxMesh.geometry);
+    const edgeLines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color: 0xfffff}));
+    edgeLines.raycast = function () {
+    };//скрываем эти элементы от raycast
+    boxMesh.add(edgeLines)
+
+  };
+
+  // top rows
+  addNewBoxMesh(0, 2, 0);
+  addNewBoxMesh(2, 2, 0);
+  addNewBoxMesh(-2, 2, 0);
+  addNewBoxMesh(0, 2, -2);
+  addNewBoxMesh(2, 2, -2);
+  addNewBoxMesh(-2, 2, -2);
+  addNewBoxMesh(0, 2, 2);
+  addNewBoxMesh(2, 2, 2);
+  addNewBoxMesh(-2, 2, 2);
+
+  // middle rows
+  addNewBoxMesh(0, 0, 0);
+  addNewBoxMesh(2, 0, 0);
+  addNewBoxMesh(-2, 0, 0);
+  addNewBoxMesh(0, 0, -2);
+  addNewBoxMesh(2, 0, -2);
+  addNewBoxMesh(-2, 0, -2);
+  addNewBoxMesh(0, 0, 2);
+  addNewBoxMesh(2, 0, 2);
+  addNewBoxMesh(-2, 0, 2);
+
+  // bottom rows
+  addNewBoxMesh(0, -2, 0);
+  addNewBoxMesh(2, -2, 0);
+  addNewBoxMesh(-2, -2, 0);
+  addNewBoxMesh(0, -2, -2);
+  addNewBoxMesh(2, -2, -2);
+  addNewBoxMesh(-2, -2, -2);
+  addNewBoxMesh(0, -2, 2);
+  addNewBoxMesh(2, -2, 2);
+  addNewBoxMesh(-2, -2, 2);
+
+  const pointer = new THREE.Vector2();
   const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
-  const interactiveMeshes = [] // Массив для хранения всех интерактивных элементов
 
-// Когда вы создаёте Меш и добавляете его в сцену:
-  const box = new THREE.Mesh(geometry, material);
-  scene.add(box);
-  interactiveMeshes.push(box) // Добавляем меш в массив интерактивных объектов
+  const onMouseMove = (event) => {
+    pointer.x = ((event.clientX - renderer.domElement.offsetLeft) / renderer.domElement.clientWidth) * 2 - 1;
+    pointer.y = -((event.clientY - renderer.domElement.offsetTop) / renderer.domElement.clientHeight) * 2 + 1;
 
-  function onMouseClick(event) {
-    event.preventDefault();
-
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    // get array of objects that intersects with ray
-    const intersects = raycaster.intersectObjects(interactiveMeshes); // Используем массив интерактивных объектов
-
+    const intersects = raycaster.intersectObjects(scene.children);
+    raycaster.setFromCamera(pointer, camera);
     if (intersects.length > 0) {
-      for (let i = 0; i < intersects.length; i++) {
-        intersects[i].object.material.color = new THREE.Color(Math.random() * 0xffffff);
-      }
+      console.log(intersects[0])
+      intersects[0].object.material.color.set(0xff0000);
     }
-  }
+  };
 
-  const arr = scene.children.filter(el => el.name.split('-').includes('box'))
-  console.log(box)
-
-  window.addEventListener('click', onMouseClick, false);
+  window.addEventListener('mousemove', onMouseMove);
 
   const animate = () => {
     requestAnimationFrame(animate);
@@ -104,9 +112,9 @@ const GetPointsOnScene = () => {
 
   animate();
   return <div>
-    <button className="btn" onClick={handler}>
-      Reset
-    </button>
+    {/*<button className="btn" onClick={handler}>*/}
+    {/*  Reset*/}
+    {/*</button>*/}
   </div>
 }
 

@@ -5,10 +5,10 @@ body {
     height: 100%;
 }
 
-canvas {
-    margin: 20px auto;
-    border: 2px solid black;
-}
+/*canvas {*/
+/*    margin: 20px auto;*/
+/*    border: 2px solid black;*/
+/*}*/
 
 .renderer {
     display: flex;
