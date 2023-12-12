@@ -81,7 +81,7 @@ const Camera = () => {
     shadowMapSizeWidth: 512,
     shadowMapSizeHeight: 512,
   }
-  
+
   const animate = () => {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
@@ -102,14 +102,15 @@ const Camera = () => {
       z: 0,
       onUpdate: () => controls.update(),
     })
-    gsap.to(camera.position, {
-      duration: 2,
-      x: 20,
-      y: 60,
-      z: 0,
-      delay: 2,
-      onUpdate: () => controls.update(),
-    })
+    // //анимация step by step (delay - через сколько секунд сработает анимация)
+    //  gsap.to(camera.position, {
+    //    duration: 2,
+    //    x: 20,
+    //    y: 60,
+    //    z: 0,
+    //    delay: 2,
+    //    onUpdate: () => controls.update(),
+    //  })
   }
 
   useEffect(() => {
