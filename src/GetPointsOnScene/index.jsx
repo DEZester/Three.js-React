@@ -109,7 +109,7 @@ const GetPointsOnScene = () => {
       })
     }
   });
-//test test
+
   const animate = () => {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
