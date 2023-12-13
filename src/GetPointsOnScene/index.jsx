@@ -82,22 +82,32 @@ const GetPointsOnScene = () => {
   addNewBoxMesh(2, -2, 2);
   addNewBoxMesh(-2, -2, 2);
 
-  const pointer = new THREE.Vector2();
-  const raycaster = new THREE.Raycaster();
 
-  const onMouseMove = (event) => {
+  const raycaster = new THREE.Raycaster();
+  let pointer = {x: 0, y: 0};
+
+  let intersects = [];
+  //определяет точки
+  window.addEventListener('mousemove', event => {
     pointer.x = ((event.clientX - renderer.domElement.offsetLeft) / renderer.domElement.clientWidth) * 2 - 1;
     pointer.y = -((event.clientY - renderer.domElement.offsetTop) / renderer.domElement.clientHeight) * 2 + 1;
-
-    const intersects = raycaster.intersectObjects(scene.children);
     raycaster.setFromCamera(pointer, camera);
-    if (intersects.length > 0) {
-      console.log(intersects[0])
-      intersects[0].object.material.color.set(0xff0000);
-    }
-  };
+    intersects = raycaster.intersectObjects(scene.children);
+  });
 
-  window.addEventListener('mousemove', onMouseMove);
+  //по двойному клику меняет цвет элемента
+  window.addEventListener('dblclick', _ => {
+    if (intersects.length > 0) {
+      if (intersects[0].object.material.color.getHex() === 0xffff00) {
+        intersects[0].object.material.color.set('black');
+        return;
+      }
+      intersects[0].object.material.color.set('yellow');
+    }
+    scene.children.filter(child => child.uuid !== intersects[0].object.uuid).forEach(el => {
+      el.material.color.set('black');
+    })
+  });
 
   const animate = () => {
     requestAnimationFrame(animate);
