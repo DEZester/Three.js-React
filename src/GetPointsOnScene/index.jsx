@@ -4,6 +4,7 @@ import {GUI} from "dat.gui";
 import gsap from 'gsap'
 import {useEffect} from "react";
 import {SVGRenderer} from 'three/examples/jsm/renderers/SVGRenderer'
+import {log} from "three/nodes";
 
 var cloneDeep = require('lodash.clonedeep');
 
@@ -103,10 +104,10 @@ const GetPointsOnScene = () => {
         return;
       }
       intersects[0].object.material.color.set('yellow');
+      scene.children.filter(child => child.uuid !== intersects[0].object.uuid).forEach(el => {
+        el.material.color.set('black');
+      })
     }
-    scene.children.filter(child => child.uuid !== intersects[0].object.uuid).forEach(el => {
-      el.material.color.set('black');
-    })
   });
 
   const animate = () => {
