@@ -9,6 +9,7 @@ import SphereMesh from "./SphereMesh/SphereMesh";
 import Camera from "./LightingAndCameraAnimations";
 import Lighting from "./Lighting";
 import GetPointsOnScene from "./GetPointsOnScene";
+import RaycasterDragDrop from "./RaycasterDragDrop";
 
 //x-0 y-0 z-5
 function App() {
@@ -16,7 +17,7 @@ function App() {
     <div className="container">
       {/* <DrawingLines /> */}
       <Routes>
-        <Route path="/" element={<GetPointsOnScene/>}/>
+        <Route path="/" element={<RaycasterDragDrop/>}/>
         {/*<Route path="/win" element={<WinPage />} />*/}
       </Routes>
     </div>
