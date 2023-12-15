@@ -67,28 +67,27 @@ const DownloadModels = () => {
   }
 
   let mixer
-
+  let action
   const createModelFromBlender = (model) => {
     const loader = new GLTFLoader();
 
     loader.load(model, function (data) {
       // console.log(data)
       const item = data.scene
-      // item.castShadow = true
-      // item.receiveShadow = true
+      item.castShadow = true
+      item.receiveShadow = true
       // item.position.z = 15
       item.position.y = 3
       item.scale.set(3, 3, 3)
       // item.position.z = 15
-      // item.userData.draggable = true
-      // item.userData.name = 'blenderModel'
+      item.children[0].userData.draggable = true
+      item.children[0].userData.name = 'blenderModel'
       // // console.log(item)
       scene.add(item);
       mixer = new THREE.AnimationMixer(item)
       const clips = data.animations
       const clip = THREE.AnimationClip.findByName(clips, 'SecondAnimation')
-      const action = mixer.clipAction(clip)
-      action.play()
+      action = mixer.clipAction(clip)
 
     }, undefined, function (error) {
 
@@ -142,6 +141,16 @@ const DownloadModels = () => {
   }
 
   const clock = new THREE.Clock()
+
+  window.addEventListener('keydown', (e) => {
+    console.log(e.key)
+    if (e.key === 'ArrowUp') {
+      console.log(action)
+      action.play()
+    } else {
+      action.stop()
+    }
+  })
 
   function animate() {
     mixer?.update(clock.getDelta())
