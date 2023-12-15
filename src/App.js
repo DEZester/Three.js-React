@@ -10,6 +10,7 @@ import Camera from "./LightingAndCameraAnimations";
 import Lighting from "./Lighting";
 import GetPointsOnScene from "./GetPointsOnScene";
 import RaycasterDragDrop from "./RaycasterDragDrop";
+import DownloadModels from "./DownloadModelsAndAnimations";
 
 //x-0 y-0 z-5
 function App() {
@@ -17,8 +18,7 @@ function App() {
     <div className="container">
       {/* <DrawingLines /> */}
       <Routes>
-        <Route path="/" element={<RaycasterDragDrop/>}/>
-        {/*<Route path="/win" element={<WinPage />} />*/}
+        <Route path="/" element={<DownloadModels/>}/>
       </Routes>
     </div>
   );
